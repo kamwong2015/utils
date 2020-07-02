@@ -1,5 +1,5 @@
 import torch
-import urllib
+import urllib2
 import os
 
 
@@ -26,7 +26,7 @@ class Corpus(object):
     def get_data(self, path, batch_size=20):
         # Add words to the dictionary
 #         infile = open(path, 'r')
-        infile = urllib.urlopen("https://wordpress.org/plugins/about/readme.txt") 
+        infile = urllib2.urlopen("https://wordpress.org/plugins/about/readme.txt") 
         with infile as f:
             tokens = 0
             for line in f:
