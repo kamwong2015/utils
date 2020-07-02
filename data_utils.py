@@ -25,7 +25,8 @@ class Corpus(object):
 
     def get_data(self, path, batch_size=20):
         # Add words to the dictionary
-        with open(path, 'r') as f:
+        urllib.request.urlopen(data_url) 
+        with urllib.request.urlopen(path) as f:
             tokens = 0
             for line in f:
                 words = line.split() + ['<eos>']
