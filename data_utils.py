@@ -1,5 +1,4 @@
 import torch
-import urllib
 import os
 
 
@@ -25,9 +24,9 @@ class Corpus(object):
 
     def get_data(self, path, batch_size=20):
         # Add words to the dictionary
-        with urllib.request.urlopen(path) as infile:
+        with open(path, 'r') as f:
             tokens = 0
-            for line in infile:
+            for line in f:
                 words = line.split() + ['<eos>']
                 tokens += len(words)
                 for word in words: 
@@ -36,8 +35,8 @@ class Corpus(object):
         # Tokenize the file content
         ids = torch.LongTensor(tokens)
         token = 0
-        with urllib.request.urlopen(path) as infile:
-            for line in infile:
+        with open(path, 'r') as f:
+            for line in f:
                 words = line.split() + ['<eos>']
                 for word in words:
                     ids[token] = self.dictionary.word2idx[word]
