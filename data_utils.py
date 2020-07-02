@@ -25,23 +25,23 @@ class Corpus(object):
 
     def get_data(self, path, batch_size=20):
         # Add words to the dictionary
-        infile = urllib.request.urlopen(path) 
-        tokens = 0
-        for line in infile:
-            words = line.split() + ['<eos>']
-            tokens += len(words)
-            for word in words: 
-                self.dictionary.add_word(word)  
+        with urllib.request.urlopen(path) as infile:
+            tokens = 0
+            for line in infile:
+                words = line.split() + ['<eos>']
+                tokens += len(words)
+                for word in words: 
+                    self.dictionary.add_word(word)  
         
         # Tokenize the file content
-        infile = urllib.request.urlopen(path) 
         ids = torch.LongTensor(tokens)
         token = 0
-        for line in infile:
-            words = line.split() + ['<eos>']
-            for word in words:
-                ids[token] = self.dictionary.word2idx[word]
-                token += 1
+        with urllib.request.urlopen(path) as infile:
+            for line in infile:
+                words = line.split() + ['<eos>']
+                for word in words:
+                    ids[token] = self.dictionary.word2idx[word]
+                    token += 1
         num_batches = ids.size(0) // batch_size
         ids = ids[:num_batches*batch_size]
         return ids.view(batch_size, -1)
